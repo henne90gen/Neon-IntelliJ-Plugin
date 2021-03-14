@@ -1,0 +1,20 @@
+{
+  parserClass="de.henne90gen.NeonParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Neon"
+  psiImplClassSuffix="Impl"
+  psiPackage="de.henne90gen.psi"
+  psiImplPackage="de.henne90gen.psi.impl"
+
+  elementTypeHolderClass="de.henne90gen.psi.NeonTypes"
+  elementTypeClass="de.henne90gen.NeonElementType"
+  tokenTypeClass="de.henne90gen.NeonTokenType"
+}
+
+neonFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY

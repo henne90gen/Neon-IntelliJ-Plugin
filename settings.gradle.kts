@@ -1,1 +1,1 @@
-rootProject.name = "Neon-IntelliJ-Plugin"
+rootProject.name = "Neon Language Plugin"

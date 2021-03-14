@@ -23,6 +23,8 @@ plugins {
 group = properties("pluginGroup")
 version = properties("pluginVersion")
 
+sourceSets["main"].java.srcDirs("src/main/gen")
+
 // Configure project's dependencies
 repositories {
     mavenCentral()
@@ -36,7 +38,9 @@ dependencies {
 // Read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName = properties("pluginName")
-    version = properties("platformVersion")
+    //    version = properties("platformVersion")
+    // NOTE: using the locally installed version of IntelliJ
+    localPath = properties("platformPath")
     type = properties("platformType")
     downloadSources = properties("platformDownloadSources").toBoolean()
     updateSinceUntilBuild = true
@@ -77,6 +81,10 @@ tasks {
 
     withType<Detekt> {
         jvmTarget = "1.8"
+    }
+
+    runIde {
+        jbrVersion("jbrsdk-11_0_10b1379.1")
     }
 
     patchPluginXml {

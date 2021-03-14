@@ -8,12 +8,12 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.henne90gen.neonintellijplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.henne90gen.neonintellijplugin.services.MyProjectService"/>
+        <fileType name="Neon File" implementationClass="de.henne90gen.NeonFileType"
+                  fieldName="INSTANCE" language="Neon" extensions="ne"/>
+        <lang.parserDefinition language="Neon"
+                               implementationClass="de.henne90gen.NeonParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Neon"
+                                       implementationClass="de.henne90gen.NeonSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="de.henne90gen.NeonColorSettingsPage"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.henne90gen.neonintellijplugin.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
