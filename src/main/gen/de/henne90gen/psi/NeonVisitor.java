@@ -7,7 +7,47 @@ import com.intellij.psi.PsiElement;
 
 public class NeonVisitor extends PsiElementVisitor {
 
-  public void visitProperty(@NotNull NeonProperty o) {
+  public void visitAssignment(@NotNull NeonAssignment o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAssignmentLeft(@NotNull NeonAssignmentLeft o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDataType(@NotNull NeonDataType o) {
+    visitPsiElement(o);
+  }
+
+  public void visitDefinition(@NotNull NeonDefinition o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExpression(@NotNull NeonExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExternalFunction(@NotNull NeonExternalFunction o) {
+    visitPsiElement(o);
+  }
+
+  public void visitForStatement(@NotNull NeonForStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFunction(@NotNull NeonFunction o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIfStatement(@NotNull NeonIfStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitImportStatement(@NotNull NeonImportStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStatement(@NotNull NeonStatement o) {
     visitPsiElement(o);
   }
 

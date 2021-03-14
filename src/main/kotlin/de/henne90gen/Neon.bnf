@@ -15,6 +15,39 @@
 
 neonFile ::= item_*
 
-private item_ ::= (property|COMMENT|CRLF)
+private item_ ::= (function | COMMENT | NEW_LINE)
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+data_type ::= (IDENTIFIER | SIMPLE_DATA_TYPE)
+
+statement ::= (
+    NEW_LINE |
+    RETURN expression NEW_LINE |
+    assignment NEW_LINE |
+    definition NEW_LINE |
+    external_function NEW_LINE |
+    function |
+    if_statement |
+    for_statement |
+    import_statement
+    )
+
+definition ::= data_type (LEFT_BRACKET INTEGER RIGHT_BRACKET)? IDENTIFIER
+assignment ::= assignment_left SINGLE_EQUALS expression
+assignment_left ::= definition | IDENTIFIER
+if_statement ::= IF expression LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
+for_statement ::= FOR assignment SEMICOLON expression SEMICOLON assignment LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
+import_statement ::= IMPORT STRING
+
+// TODO improve arguments parsing
+function ::= FUN IDENTIFIER
+    LEFT_PARAN (data_type IDENTIFIER COMMA)*
+    RIGHT_PARAN data_type?
+    LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
+
+// TODO improve arguments parsing
+external_function ::= EXTERN FUN IDENTIFIER
+    LEFT_PARAN (data_type IDENTIFIER COMMA)* RIGHT_PARAN data_type
+
+expression ::= (LEFT_PARAN expression RIGHT_PARAN) |
+    ((BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER) (PLUS | MINUS | STAR | DIV | AND | OR | LESS_THAN | LESS_EQUALS | NOT_EQUALS | DOUBLE_EQUALS | GREATER_EQUALS | GREATER_THAN) expression) |
+    (BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER)

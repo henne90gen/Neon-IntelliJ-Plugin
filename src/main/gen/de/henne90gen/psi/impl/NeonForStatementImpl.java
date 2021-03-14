@@ -11,20 +11,38 @@ import static de.henne90gen.psi.NeonTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import de.henne90gen.psi.*;
 
-public class NeonPropertyImpl extends ASTWrapperPsiElement implements NeonProperty {
+public class NeonForStatementImpl extends ASTWrapperPsiElement implements NeonForStatement {
 
-  public NeonPropertyImpl(@NotNull ASTNode node) {
+  public NeonForStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull NeonVisitor visitor) {
-    visitor.visitProperty(this);
+    visitor.visitForStatement(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof NeonVisitor) accept((NeonVisitor)visitor);
     else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public List<NeonAssignment> getAssignmentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, NeonAssignment.class);
+  }
+
+  @Override
+  @NotNull
+  public NeonExpression getExpression() {
+    return findNotNullChildByClass(NeonExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<NeonStatement> getStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, NeonStatement.class);
   }
 
 }

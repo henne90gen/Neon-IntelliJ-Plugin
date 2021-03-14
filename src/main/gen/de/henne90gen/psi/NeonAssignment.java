@@ -5,6 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface NeonProperty extends PsiElement {
+public interface NeonAssignment extends PsiElement {
+
+  @NotNull
+  NeonAssignmentLeft getAssignmentLeft();
+
+  @NotNull
+  NeonExpression getExpression();
 
 }

@@ -9,9 +9,10 @@ import javax.swing.Icon
 
 class NeonColorSettingsPage : ColorSettingsPage {
     private val DESCRIPTORS = arrayOf(
-        AttributesDescriptor("Key", NeonSyntaxHighlighter.KEY),
-        AttributesDescriptor("Separator", NeonSyntaxHighlighter.SEPARATOR),
-        AttributesDescriptor("Value", NeonSyntaxHighlighter.VALUE),
+        AttributesDescriptor("Key Word", NeonSyntaxHighlighter.KEY_WORD),
+        AttributesDescriptor("Operation", NeonSyntaxHighlighter.OPERATION),
+        AttributesDescriptor("Identifier", NeonSyntaxHighlighter.IDENTIFIER),
+        AttributesDescriptor("Comment", NeonSyntaxHighlighter.COMMENT),
         AttributesDescriptor("Bad Value", NeonSyntaxHighlighter.BAD_CHARACTER)
     )
 
