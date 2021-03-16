@@ -4,13 +4,17 @@ package de.henne90gen.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 
-public interface NeonExpression extends PsiElement {
+public interface NeonVariable extends PsiElement {
 
   @Nullable
   NeonExpression getExpression();
 
   @Nullable
-  NeonVariable getVariable();
+  String getName();
+
+  @NotNull
+  PsiReference getReference();
 
 }

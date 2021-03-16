@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static de.henne90gen.psi.NeonTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import de.henne90gen.psi.*;
+import de.henne90gen.NeonPsiUtil;
 
 public class NeonStatementImpl extends ASTWrapperPsiElement implements NeonStatement {
 
@@ -35,12 +36,6 @@ public class NeonStatementImpl extends ASTWrapperPsiElement implements NeonState
 
   @Override
   @Nullable
-  public NeonDefinition getDefinition() {
-    return findChildByClass(NeonDefinition.class);
-  }
-
-  @Override
-  @Nullable
   public NeonExpression getExpression() {
     return findChildByClass(NeonExpression.class);
   }
@@ -59,12 +54,6 @@ public class NeonStatementImpl extends ASTWrapperPsiElement implements NeonState
 
   @Override
   @Nullable
-  public NeonFunction getFunction() {
-    return findChildByClass(NeonFunction.class);
-  }
-
-  @Override
-  @Nullable
   public NeonIfStatement getIfStatement() {
     return findChildByClass(NeonIfStatement.class);
   }
@@ -73,6 +62,12 @@ public class NeonStatementImpl extends ASTWrapperPsiElement implements NeonState
   @Nullable
   public NeonImportStatement getImportStatement() {
     return findChildByClass(NeonImportStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public NeonVariableDefinition getVariableDefinition() {
+    return findChildByClass(NeonVariableDefinition.class);
   }
 
 }

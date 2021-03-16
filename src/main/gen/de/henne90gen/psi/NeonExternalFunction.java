@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface NeonExternalFunction extends PsiElement {
 
-  @NotNull
-  List<NeonDataType> getDataTypeList();
+  @Nullable
+  NeonDataType getDataType();
+
+  @Nullable
+  NeonFunctionArguments getFunctionArguments();
 
 }

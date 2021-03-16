@@ -15,5 +15,7 @@
         <lang.syntaxHighlighterFactory language="Neon"
                                        implementationClass="de.henne90gen.NeonSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="de.henne90gen.NeonColorSettingsPage"/>
+        <completion.contributor language="Neon"
+                                implementationClass="de.henne90gen.NeonCompletionContributor"/>
     </extensions>
 </idea-plugin>

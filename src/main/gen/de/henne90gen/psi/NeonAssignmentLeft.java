@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface NeonAssignmentLeft extends PsiElement {
 
   @Nullable
-  NeonDefinition getDefinition();
+  NeonVariableDefinition getVariableDefinition();
 
 }

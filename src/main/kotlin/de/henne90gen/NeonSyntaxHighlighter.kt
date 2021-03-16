@@ -12,19 +12,31 @@ import de.henne90gen.psi.NeonTypes
 
 class NeonSyntaxHighlighter : SyntaxHighlighterBase() {
     companion object {
-        val OPERATION = createTextAttributesKey("NEON_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN)
+        val OPERATION = createTextAttributesKey("NEON_OPERATION", DefaultLanguageHighlighterColors.OPERATION_SIGN)
         val KEY_WORD = createTextAttributesKey("NEON_KEY_WORD", DefaultLanguageHighlighterColors.KEYWORD)
-        val IDENTIFIER = createTextAttributesKey("NEON_STRING", DefaultLanguageHighlighterColors.IDENTIFIER)
+        val SEMICOLON = createTextAttributesKey("NEON_SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON)
+        val COMMA = createTextAttributesKey("NEON_COMMA", DefaultLanguageHighlighterColors.COMMA)
+        val PARENTHESES = createTextAttributesKey("NEON_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES)
+        val BRACKETS = createTextAttributesKey("NEON_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS)
+        val BRACES = createTextAttributesKey("NEON_BRACES", DefaultLanguageHighlighterColors.BRACES)
+        val NUMBER = createTextAttributesKey("NEON_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
+        val IDENTIFIER = createTextAttributesKey("NEON_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
         val COMMENT = createTextAttributesKey("NEON_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
         val BAD_CHARACTER = createTextAttributesKey("NEON_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
-    }
 
-    private val BAD_CHAR_KEYS = arrayOf(BAD_CHARACTER)
-    private val OPERATION_KEYS = arrayOf(OPERATION)
-    private val KEY_WORD_KEYS = arrayOf(KEY_WORD)
-    private val IDENTIFIER_KEYS = arrayOf(IDENTIFIER)
-    private val COMMENT_KEYS = arrayOf(COMMENT)
-    private val EMPTY_KEYS = arrayOf<TextAttributesKey>()
+        private val BAD_CHAR_KEYS = arrayOf(BAD_CHARACTER)
+        private val OPERATION_KEYS = arrayOf(OPERATION)
+        private val KEY_WORD_KEYS = arrayOf(KEY_WORD)
+        private val SEMICOLON_KEYS = arrayOf(SEMICOLON)
+        private val COMMA_KEYS = arrayOf(COMMA)
+        private val PARENTHESES_KEYS = arrayOf(PARENTHESES)
+        private val BRACKETS_KEYS = arrayOf(BRACKETS)
+        private val BRACES_KEYS = arrayOf(BRACES)
+        private val NUMBER_KEYS = arrayOf(NUMBER)
+        private val IDENTIFIER_KEYS = arrayOf(IDENTIFIER)
+        private val COMMENT_KEYS = arrayOf(COMMENT)
+        private val EMPTY_KEYS = arrayOf<TextAttributesKey>()
+    }
 
     override fun getHighlightingLexer(): Lexer {
         return NeonLexerAdapter()
@@ -53,6 +65,21 @@ class NeonSyntaxHighlighter : SyntaxHighlighterBase() {
             NeonTypes.GREATER_EQUALS -> OPERATION_KEYS
             NeonTypes.DOUBLE_EQUALS -> OPERATION_KEYS
             NeonTypes.NOT_EQUALS -> OPERATION_KEYS
+
+            NeonTypes.LEFT_PARAN -> PARENTHESES_KEYS
+            NeonTypes.RIGHT_PARAN -> PARENTHESES_KEYS
+
+            NeonTypes.LEFT_BRACKET -> BRACKETS_KEYS
+            NeonTypes.RIGHT_BRACKET -> BRACKETS_KEYS
+
+            NeonTypes.LEFT_CURLY_BRACE -> BRACES_KEYS
+            NeonTypes.RIGHT_CURLY_BRACE -> BRACES_KEYS
+
+            NeonTypes.INTEGER -> NUMBER_KEYS
+            NeonTypes.FLOAT -> NUMBER_KEYS
+
+            NeonTypes.SEMICOLON -> SEMICOLON_KEYS
+            NeonTypes.COMMA -> COMMA_KEYS
 
             NeonTypes.IDENTIFIER -> IDENTIFIER_KEYS
             NeonTypes.COMMENT -> COMMENT_KEYS

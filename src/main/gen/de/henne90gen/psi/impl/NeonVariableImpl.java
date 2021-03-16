@@ -10,15 +10,17 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static de.henne90gen.psi.NeonTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import de.henne90gen.psi.*;
+import de.henne90gen.NeonPsiUtil;
+import com.intellij.psi.PsiReference;
 
-public class NeonDefinitionImpl extends ASTWrapperPsiElement implements NeonDefinition {
+public class NeonVariableImpl extends ASTWrapperPsiElement implements NeonVariable {
 
-  public NeonDefinitionImpl(@NotNull ASTNode node) {
+  public NeonVariableImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull NeonVisitor visitor) {
-    visitor.visitDefinition(this);
+    visitor.visitVariable(this);
   }
 
   @Override
@@ -28,9 +30,21 @@ public class NeonDefinitionImpl extends ASTWrapperPsiElement implements NeonDefi
   }
 
   @Override
+  @Nullable
+  public NeonExpression getExpression() {
+    return findChildByClass(NeonExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public String getName() {
+    return NeonPsiUtil.getName(this);
+  }
+
+  @Override
   @NotNull
-  public NeonDataType getDataType() {
-    return findNotNullChildByClass(NeonDataType.class);
+  public PsiReference getReference() {
+    return NeonPsiUtil.getReference(this);
   }
 
 }

@@ -50,13 +50,13 @@ public class NeonParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // definition | IDENTIFIER
+  // variable_definition | IDENTIFIER
   public static boolean assignment_left(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment_left")) return false;
     if (!nextTokenIs(b, "<assignment left>", IDENTIFIER, SIMPLE_DATA_TYPE)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ASSIGNMENT_LEFT, "<assignment left>");
-    r = definition(b, l + 1);
+    r = variable_definition(b, l + 1);
     if (!r) r = consumeToken(b, IDENTIFIER);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -76,40 +76,9 @@ public class NeonParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // data_type (LEFT_BRACKET INTEGER RIGHT_BRACKET)? IDENTIFIER
-  public static boolean definition(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "definition")) return false;
-    if (!nextTokenIs(b, "<definition>", IDENTIFIER, SIMPLE_DATA_TYPE)) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, DEFINITION, "<definition>");
-    r = data_type(b, l + 1);
-    r = r && definition_1(b, l + 1);
-    r = r && consumeToken(b, IDENTIFIER);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (LEFT_BRACKET INTEGER RIGHT_BRACKET)?
-  private static boolean definition_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "definition_1")) return false;
-    definition_1_0(b, l + 1);
-    return true;
-  }
-
-  // LEFT_BRACKET INTEGER RIGHT_BRACKET
-  private static boolean definition_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "definition_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LEFT_BRACKET, INTEGER, RIGHT_BRACKET);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // (LEFT_PARAN expression RIGHT_PARAN) |
-  //     ((BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER) (PLUS | MINUS | STAR | DIV | AND | OR | LESS_THAN | LESS_EQUALS | NOT_EQUALS | DOUBLE_EQUALS | GREATER_EQUALS | GREATER_THAN) expression) |
-  //     (BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER)
+  //     ((BOOLEAN | INTEGER | FLOAT | STRING | variable) (PLUS | MINUS | STAR | DIV | AND | OR | LESS_THAN | LESS_EQUALS | NOT_EQUALS | DOUBLE_EQUALS | GREATER_EQUALS | GREATER_THAN) expression) |
+  //     (BOOLEAN | INTEGER | FLOAT | STRING | variable)
   public static boolean expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression")) return false;
     boolean r;
@@ -133,7 +102,7 @@ public class NeonParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER) (PLUS | MINUS | STAR | DIV | AND | OR | LESS_THAN | LESS_EQUALS | NOT_EQUALS | DOUBLE_EQUALS | GREATER_EQUALS | GREATER_THAN) expression
+  // (BOOLEAN | INTEGER | FLOAT | STRING | variable) (PLUS | MINUS | STAR | DIV | AND | OR | LESS_THAN | LESS_EQUALS | NOT_EQUALS | DOUBLE_EQUALS | GREATER_EQUALS | GREATER_THAN) expression
   private static boolean expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_1")) return false;
     boolean r;
@@ -145,7 +114,7 @@ public class NeonParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER
+  // BOOLEAN | INTEGER | FLOAT | STRING | variable
   private static boolean expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_1_0")) return false;
     boolean r;
@@ -153,7 +122,7 @@ public class NeonParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, INTEGER);
     if (!r) r = consumeToken(b, FLOAT);
     if (!r) r = consumeToken(b, STRING);
-    if (!r) r = consumeToken(b, IDENTIFIER);
+    if (!r) r = variable(b, l + 1);
     return r;
   }
 
@@ -176,7 +145,7 @@ public class NeonParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER
+  // BOOLEAN | INTEGER | FLOAT | STRING | variable
   private static boolean expression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_2")) return false;
     boolean r;
@@ -184,13 +153,13 @@ public class NeonParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, INTEGER);
     if (!r) r = consumeToken(b, FLOAT);
     if (!r) r = consumeToken(b, STRING);
-    if (!r) r = consumeToken(b, IDENTIFIER);
+    if (!r) r = variable(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
   // EXTERN FUN IDENTIFIER
-  //     LEFT_PARAN (data_type IDENTIFIER COMMA)* RIGHT_PARAN data_type
+  //     LEFT_PARAN function_arguments? RIGHT_PARAN data_type?
   public static boolean external_function(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "external_function")) return false;
     if (!nextTokenIs(b, EXTERN)) return false;
@@ -199,31 +168,23 @@ public class NeonParser implements PsiParser, LightPsiParser {
     r = consumeTokens(b, 0, EXTERN, FUN, IDENTIFIER, LEFT_PARAN);
     r = r && external_function_4(b, l + 1);
     r = r && consumeToken(b, RIGHT_PARAN);
-    r = r && data_type(b, l + 1);
+    r = r && external_function_6(b, l + 1);
     exit_section_(b, m, EXTERNAL_FUNCTION, r);
     return r;
   }
 
-  // (data_type IDENTIFIER COMMA)*
+  // function_arguments?
   private static boolean external_function_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "external_function_4")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!external_function_4_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "external_function_4", c)) break;
-    }
+    function_arguments(b, l + 1);
     return true;
   }
 
-  // data_type IDENTIFIER COMMA
-  private static boolean external_function_4_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "external_function_4_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = data_type(b, l + 1);
-    r = r && consumeTokens(b, 0, IDENTIFIER, COMMA);
-    exit_section_(b, m, null, r);
-    return r;
+  // data_type?
+  private static boolean external_function_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "external_function_6")) return false;
+    data_type(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -259,7 +220,7 @@ public class NeonParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // FUN IDENTIFIER
-  //     LEFT_PARAN (data_type IDENTIFIER COMMA)*
+  //     LEFT_PARAN function_arguments?
   //     RIGHT_PARAN data_type?
   //     LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
   public static boolean function(PsiBuilder b, int l) {
@@ -278,26 +239,11 @@ public class NeonParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (data_type IDENTIFIER COMMA)*
+  // function_arguments?
   private static boolean function_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_3")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!function_3_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "function_3", c)) break;
-    }
+    function_arguments(b, l + 1);
     return true;
-  }
-
-  // data_type IDENTIFIER COMMA
-  private static boolean function_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "function_3_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = data_type(b, l + 1);
-    r = r && consumeTokens(b, 0, IDENTIFIER, COMMA);
-    exit_section_(b, m, null, r);
-    return r;
   }
 
   // data_type?
@@ -316,6 +262,38 @@ public class NeonParser implements PsiParser, LightPsiParser {
       if (!empty_element_parsed_guard_(b, "function_7", c)) break;
     }
     return true;
+  }
+
+  /* ********************************************************** */
+  // data_type IDENTIFIER (COMMA function_arguments)?
+  public static boolean function_arguments(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_arguments")) return false;
+    if (!nextTokenIs(b, "<function arguments>", IDENTIFIER, SIMPLE_DATA_TYPE)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, FUNCTION_ARGUMENTS, "<function arguments>");
+    r = data_type(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
+    r = r && function_arguments_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (COMMA function_arguments)?
+  private static boolean function_arguments_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_arguments_2")) return false;
+    function_arguments_2_0(b, l + 1);
+    return true;
+  }
+
+  // COMMA function_arguments
+  private static boolean function_arguments_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_arguments_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && function_arguments(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -384,9 +362,8 @@ public class NeonParser implements PsiParser, LightPsiParser {
   // NEW_LINE |
   //     RETURN expression NEW_LINE |
   //     assignment NEW_LINE |
-  //     definition NEW_LINE |
+  //     variable_definition NEW_LINE |
   //     external_function NEW_LINE |
-  //     function |
   //     if_statement |
   //     for_statement |
   //     import_statement
@@ -399,7 +376,6 @@ public class NeonParser implements PsiParser, LightPsiParser {
     if (!r) r = statement_2(b, l + 1);
     if (!r) r = statement_3(b, l + 1);
     if (!r) r = statement_4(b, l + 1);
-    if (!r) r = function(b, l + 1);
     if (!r) r = if_statement(b, l + 1);
     if (!r) r = for_statement(b, l + 1);
     if (!r) r = import_statement(b, l + 1);
@@ -430,12 +406,12 @@ public class NeonParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // definition NEW_LINE
+  // variable_definition NEW_LINE
   private static boolean statement_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = definition(b, l + 1);
+    r = variable_definition(b, l + 1);
     r = r && consumeToken(b, NEW_LINE);
     exit_section_(b, m, null, r);
     return r;
@@ -448,6 +424,69 @@ public class NeonParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = external_function(b, l + 1);
     r = r && consumeToken(b, NEW_LINE);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER (LEFT_BRACKET expression RIGHT_BRACKET)?
+  public static boolean variable(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENTIFIER);
+    r = r && variable_1(b, l + 1);
+    exit_section_(b, m, VARIABLE, r);
+    return r;
+  }
+
+  // (LEFT_BRACKET expression RIGHT_BRACKET)?
+  private static boolean variable_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_1")) return false;
+    variable_1_0(b, l + 1);
+    return true;
+  }
+
+  // LEFT_BRACKET expression RIGHT_BRACKET
+  private static boolean variable_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LEFT_BRACKET);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RIGHT_BRACKET);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // data_type (LEFT_BRACKET INTEGER RIGHT_BRACKET)? IDENTIFIER
+  public static boolean variable_definition(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_definition")) return false;
+    if (!nextTokenIs(b, "<variable definition>", IDENTIFIER, SIMPLE_DATA_TYPE)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, VARIABLE_DEFINITION, "<variable definition>");
+    r = data_type(b, l + 1);
+    r = r && variable_definition_1(b, l + 1);
+    r = r && consumeToken(b, IDENTIFIER);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (LEFT_BRACKET INTEGER RIGHT_BRACKET)?
+  private static boolean variable_definition_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_definition_1")) return false;
+    variable_definition_1_0(b, l + 1);
+    return true;
+  }
+
+  // LEFT_BRACKET INTEGER RIGHT_BRACKET
+  private static boolean variable_definition_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_definition_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LEFT_BRACKET, INTEGER, RIGHT_BRACKET);
     exit_section_(b, m, null, r);
     return r;
   }

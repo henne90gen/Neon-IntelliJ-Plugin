@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static de.henne90gen.psi.NeonTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import de.henne90gen.psi.*;
+import de.henne90gen.NeonPsiUtil;
 
 public class NeonExternalFunctionImpl extends ASTWrapperPsiElement implements NeonExternalFunction {
 
@@ -28,9 +29,15 @@ public class NeonExternalFunctionImpl extends ASTWrapperPsiElement implements Ne
   }
 
   @Override
-  @NotNull
-  public List<NeonDataType> getDataTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, NeonDataType.class);
+  @Nullable
+  public NeonDataType getDataType() {
+    return findChildByClass(NeonDataType.class);
+  }
+
+  @Override
+  @Nullable
+  public NeonFunctionArguments getFunctionArguments() {
+    return findChildByClass(NeonFunctionArguments.class);
   }
 
 }

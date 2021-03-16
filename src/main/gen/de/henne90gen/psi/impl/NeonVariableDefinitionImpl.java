@@ -8,18 +8,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static de.henne90gen.psi.NeonTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import de.henne90gen.NeonNamedElementImpl;
 import de.henne90gen.psi.*;
 import de.henne90gen.NeonPsiUtil;
 
-public class NeonAssignmentLeftImpl extends ASTWrapperPsiElement implements NeonAssignmentLeft {
+public class NeonVariableDefinitionImpl extends NeonNamedElementImpl implements NeonVariableDefinition {
 
-  public NeonAssignmentLeftImpl(@NotNull ASTNode node) {
+  public NeonVariableDefinitionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull NeonVisitor visitor) {
-    visitor.visitAssignmentLeft(this);
+    visitor.visitVariableDefinition(this);
   }
 
   @Override
@@ -29,9 +29,27 @@ public class NeonAssignmentLeftImpl extends ASTWrapperPsiElement implements Neon
   }
 
   @Override
+  @NotNull
+  public NeonDataType getDataType() {
+    return findNotNullChildByClass(NeonDataType.class);
+  }
+
+  @Override
   @Nullable
-  public NeonVariableDefinition getVariableDefinition() {
-    return findChildByClass(NeonVariableDefinition.class);
+  public String getName() {
+    return NeonPsiUtil.getName(this);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement setName(@NotNull String newName) {
+    return NeonPsiUtil.setName(this, newName);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return NeonPsiUtil.getNameIdentifier(this);
   }
 
 }

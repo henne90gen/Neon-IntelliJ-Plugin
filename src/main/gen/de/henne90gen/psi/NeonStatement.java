@@ -11,9 +11,6 @@ public interface NeonStatement extends PsiElement {
   NeonAssignment getAssignment();
 
   @Nullable
-  NeonDefinition getDefinition();
-
-  @Nullable
   NeonExpression getExpression();
 
   @Nullable
@@ -23,12 +20,12 @@ public interface NeonStatement extends PsiElement {
   NeonForStatement getForStatement();
 
   @Nullable
-  NeonFunction getFunction();
-
-  @Nullable
   NeonIfStatement getIfStatement();
 
   @Nullable
   NeonImportStatement getImportStatement();
+
+  @Nullable
+  NeonVariableDefinition getVariableDefinition();
 
 }

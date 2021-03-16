@@ -12,14 +12,14 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import de.henne90gen.psi.*;
 import de.henne90gen.NeonPsiUtil;
 
-public class NeonAssignmentLeftImpl extends ASTWrapperPsiElement implements NeonAssignmentLeft {
+public class NeonFunctionArgumentsImpl extends ASTWrapperPsiElement implements NeonFunctionArguments {
 
-  public NeonAssignmentLeftImpl(@NotNull ASTNode node) {
+  public NeonFunctionArgumentsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull NeonVisitor visitor) {
-    visitor.visitAssignmentLeft(this);
+    visitor.visitFunctionArguments(this);
   }
 
   @Override
@@ -29,9 +29,15 @@ public class NeonAssignmentLeftImpl extends ASTWrapperPsiElement implements Neon
   }
 
   @Override
+  @NotNull
+  public NeonDataType getDataType() {
+    return findNotNullChildByClass(NeonDataType.class);
+  }
+
+  @Override
   @Nullable
-  public NeonVariableDefinition getVariableDefinition() {
-    return findChildByClass(NeonVariableDefinition.class);
+  public NeonFunctionArguments getFunctionArguments() {
+    return findChildByClass(NeonFunctionArguments.class);
   }
 
 }

@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static de.henne90gen.psi.NeonTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import de.henne90gen.psi.*;
+import de.henne90gen.NeonPsiUtil;
 
 public class NeonImportStatementImpl extends ASTWrapperPsiElement implements NeonImportStatement {
 

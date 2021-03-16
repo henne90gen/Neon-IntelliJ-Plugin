@@ -4,16 +4,20 @@ package de.henne90gen.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import de.henne90gen.NeonNamedElement;
 
-public interface NeonFunction extends PsiElement {
+public interface NeonVariableDefinition extends NeonNamedElement {
 
-  @Nullable
+  @NotNull
   NeonDataType getDataType();
 
   @Nullable
-  NeonFunctionArguments getFunctionArguments();
+  String getName();
 
   @NotNull
-  List<NeonStatement> getStatementList();
+  PsiElement setName(@NotNull String newName);
+
+  @Nullable
+  PsiElement getNameIdentifier();
 
 }

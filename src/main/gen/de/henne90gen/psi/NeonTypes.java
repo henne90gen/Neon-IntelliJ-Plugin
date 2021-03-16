@@ -13,14 +13,16 @@ public interface NeonTypes {
   IElementType ASSIGNMENT = new NeonElementType("ASSIGNMENT");
   IElementType ASSIGNMENT_LEFT = new NeonElementType("ASSIGNMENT_LEFT");
   IElementType DATA_TYPE = new NeonElementType("DATA_TYPE");
-  IElementType DEFINITION = new NeonElementType("DEFINITION");
   IElementType EXPRESSION = new NeonElementType("EXPRESSION");
   IElementType EXTERNAL_FUNCTION = new NeonElementType("EXTERNAL_FUNCTION");
   IElementType FOR_STATEMENT = new NeonElementType("FOR_STATEMENT");
   IElementType FUNCTION = new NeonElementType("FUNCTION");
+  IElementType FUNCTION_ARGUMENTS = new NeonElementType("FUNCTION_ARGUMENTS");
   IElementType IF_STATEMENT = new NeonElementType("IF_STATEMENT");
   IElementType IMPORT_STATEMENT = new NeonElementType("IMPORT_STATEMENT");
   IElementType STATEMENT = new NeonElementType("STATEMENT");
+  IElementType VARIABLE = new NeonElementType("VARIABLE");
+  IElementType VARIABLE_DEFINITION = new NeonElementType("VARIABLE_DEFINITION");
 
   IElementType AND = new NeonTokenType("AND");
   IElementType BOOLEAN = new NeonTokenType("BOOLEAN");
@@ -70,9 +72,6 @@ public interface NeonTypes {
       else if (type == DATA_TYPE) {
         return new NeonDataTypeImpl(node);
       }
-      else if (type == DEFINITION) {
-        return new NeonDefinitionImpl(node);
-      }
       else if (type == EXPRESSION) {
         return new NeonExpressionImpl(node);
       }
@@ -85,6 +84,9 @@ public interface NeonTypes {
       else if (type == FUNCTION) {
         return new NeonFunctionImpl(node);
       }
+      else if (type == FUNCTION_ARGUMENTS) {
+        return new NeonFunctionArgumentsImpl(node);
+      }
       else if (type == IF_STATEMENT) {
         return new NeonIfStatementImpl(node);
       }
@@ -93,6 +95,12 @@ public interface NeonTypes {
       }
       else if (type == STATEMENT) {
         return new NeonStatementImpl(node);
+      }
+      else if (type == VARIABLE) {
+        return new NeonVariableImpl(node);
+      }
+      else if (type == VARIABLE_DEFINITION) {
+        return new NeonVariableDefinitionImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

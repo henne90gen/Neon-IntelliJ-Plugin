@@ -11,6 +11,8 @@
   elementTypeHolderClass="de.henne90gen.psi.NeonTypes"
   elementTypeClass="de.henne90gen.NeonElementType"
   tokenTypeClass="de.henne90gen.NeonTokenType"
+
+  psiImplUtilClass="de.henne90gen.NeonPsiUtil"
 }
 
 neonFile ::= item_*
@@ -23,31 +25,36 @@ statement ::= (
     NEW_LINE |
     RETURN expression NEW_LINE |
     assignment NEW_LINE |
-    definition NEW_LINE |
+    variable_definition NEW_LINE |
     external_function NEW_LINE |
-    function |
     if_statement |
     for_statement |
     import_statement
     )
 
-definition ::= data_type (LEFT_BRACKET INTEGER RIGHT_BRACKET)? IDENTIFIER
 assignment ::= assignment_left SINGLE_EQUALS expression
-assignment_left ::= definition | IDENTIFIER
+assignment_left ::= variable_definition | IDENTIFIER
 if_statement ::= IF expression LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
 for_statement ::= FOR assignment SEMICOLON expression SEMICOLON assignment LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
 import_statement ::= IMPORT STRING
 
-// TODO improve arguments parsing
+function_arguments ::= data_type IDENTIFIER (COMMA function_arguments)?
 function ::= FUN IDENTIFIER
-    LEFT_PARAN (data_type IDENTIFIER COMMA)*
+    LEFT_PARAN function_arguments?
     RIGHT_PARAN data_type?
     LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
-
-// TODO improve arguments parsing
 external_function ::= EXTERN FUN IDENTIFIER
-    LEFT_PARAN (data_type IDENTIFIER COMMA)* RIGHT_PARAN data_type
+    LEFT_PARAN function_arguments? RIGHT_PARAN data_type?
+
+variable_definition ::= data_type (LEFT_BRACKET INTEGER RIGHT_BRACKET)? IDENTIFIER {
+    mixin="de.henne90gen.NeonNamedElementImpl"
+    implements="de.henne90gen.NeonNamedElement"
+    methods=[getName setName getNameIdentifier]
+}
+variable ::= IDENTIFIER (LEFT_BRACKET expression RIGHT_BRACKET)? {
+    methods=[getName getReference]
+}
 
 expression ::= (LEFT_PARAN expression RIGHT_PARAN) |
-    ((BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER) (PLUS | MINUS | STAR | DIV | AND | OR | LESS_THAN | LESS_EQUALS | NOT_EQUALS | DOUBLE_EQUALS | GREATER_EQUALS | GREATER_THAN) expression) |
-    (BOOLEAN | INTEGER | FLOAT | STRING | IDENTIFIER)
+    ((BOOLEAN | INTEGER | FLOAT | STRING | variable) (PLUS | MINUS | STAR | DIV | AND | OR | LESS_THAN | LESS_EQUALS | NOT_EQUALS | DOUBLE_EQUALS | GREATER_EQUALS | GREATER_THAN) expression) |
+    (BOOLEAN | INTEGER | FLOAT | STRING | variable)

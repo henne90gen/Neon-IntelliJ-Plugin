@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface NeonDefinition extends PsiElement {
+public interface NeonFunctionArguments extends PsiElement {
 
   @NotNull
   NeonDataType getDataType();
+
+  @Nullable
+  NeonFunctionArguments getFunctionArguments();
 
 }

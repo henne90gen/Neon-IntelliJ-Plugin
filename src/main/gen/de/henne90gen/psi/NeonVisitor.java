@@ -4,6 +4,7 @@ package de.henne90gen.psi;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import de.henne90gen.NeonNamedElement;
 
 public class NeonVisitor extends PsiElementVisitor {
 
@@ -16,10 +17,6 @@ public class NeonVisitor extends PsiElementVisitor {
   }
 
   public void visitDataType(@NotNull NeonDataType o) {
-    visitPsiElement(o);
-  }
-
-  public void visitDefinition(@NotNull NeonDefinition o) {
     visitPsiElement(o);
   }
 
@@ -39,6 +36,10 @@ public class NeonVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitFunctionArguments(@NotNull NeonFunctionArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfStatement(@NotNull NeonIfStatement o) {
     visitPsiElement(o);
   }
@@ -48,6 +49,18 @@ public class NeonVisitor extends PsiElementVisitor {
   }
 
   public void visitStatement(@NotNull NeonStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVariable(@NotNull NeonVariable o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVariableDefinition(@NotNull NeonVariableDefinition o) {
+    visitNamedElement(o);
+  }
+
+  public void visitNamedElement(@NotNull NeonNamedElement o) {
     visitPsiElement(o);
   }
 
