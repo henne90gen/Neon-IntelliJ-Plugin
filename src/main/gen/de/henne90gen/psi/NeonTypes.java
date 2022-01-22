@@ -10,6 +10,7 @@ import de.henne90gen.psi.impl.*;
 
 public interface NeonTypes {
 
+  IElementType ASSERT_STATEMENT = new NeonElementType("ASSERT_STATEMENT");
   IElementType ASSIGNMENT = new NeonElementType("ASSIGNMENT");
   IElementType ASSIGNMENT_LEFT = new NeonElementType("ASSIGNMENT_LEFT");
   IElementType DATA_TYPE = new NeonElementType("DATA_TYPE");
@@ -25,6 +26,7 @@ public interface NeonTypes {
   IElementType VARIABLE_DEFINITION = new NeonElementType("VARIABLE_DEFINITION");
 
   IElementType AND = new NeonTokenType("AND");
+  IElementType ASSERT = new NeonTokenType("ASSERT");
   IElementType BOOLEAN = new NeonTokenType("BOOLEAN");
   IElementType COMMA = new NeonTokenType("COMMA");
   IElementType COMMENT = new NeonTokenType("COMMENT");
@@ -63,7 +65,10 @@ public interface NeonTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == ASSIGNMENT) {
+      if (type == ASSERT_STATEMENT) {
+        return new NeonAssertStatementImpl(node);
+      }
+      else if (type == ASSIGNMENT) {
         return new NeonAssignmentImpl(node);
       }
       else if (type == ASSIGNMENT_LEFT) {

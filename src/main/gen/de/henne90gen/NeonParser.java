@@ -36,6 +36,19 @@ public class NeonParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // ASSERT expression
+  public static boolean assert_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assert_statement")) return false;
+    if (!nextTokenIs(b, ASSERT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ASSERT);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, ASSERT_STATEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // assignment_left SINGLE_EQUALS expression
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
@@ -366,7 +379,8 @@ public class NeonParser implements PsiParser, LightPsiParser {
   //     external_function NEW_LINE |
   //     if_statement |
   //     for_statement |
-  //     import_statement
+  //     import_statement |
+  //     assert_statement
   public static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
@@ -379,6 +393,7 @@ public class NeonParser implements PsiParser, LightPsiParser {
     if (!r) r = if_statement(b, l + 1);
     if (!r) r = for_statement(b, l + 1);
     if (!r) r = import_statement(b, l + 1);
+    if (!r) r = assert_statement(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

@@ -8,6 +8,10 @@ import de.henne90gen.NeonNamedElement;
 
 public class NeonVisitor extends PsiElementVisitor {
 
+  public void visitAssertStatement(@NotNull NeonAssertStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitAssignment(@NotNull NeonAssignment o) {
     visitPsiElement(o);
   }

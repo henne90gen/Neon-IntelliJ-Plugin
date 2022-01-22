@@ -41,6 +41,7 @@ STRING = \" [:jletterdigit:]* \"
 <YYINITIAL> "for"    { return NeonTypes.FOR; }
 <YYINITIAL> "if"     { return NeonTypes.IF; }
 <YYINITIAL> "extern" { return NeonTypes.EXTERN; }
+<YYINITIAL> "assert" { return NeonTypes.ASSERT; }
 <YYINITIAL> "import" { return NeonTypes.IMPORT; }
 <YYINITIAL> "or"     { return NeonTypes.OR; }
 <YYINITIAL> "and"    { return NeonTypes.AND; }

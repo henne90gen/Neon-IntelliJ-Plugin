@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface NeonStatement extends PsiElement {
 
   @Nullable
+  NeonAssertStatement getAssertStatement();
+
+  @Nullable
   NeonAssignment getAssignment();
 
   @Nullable

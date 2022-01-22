@@ -29,7 +29,8 @@ statement ::= (
     external_function NEW_LINE |
     if_statement |
     for_statement |
-    import_statement
+    import_statement NEW_LINE |
+    assert_statement NEW_LINE
     )
 
 assignment ::= assignment_left SINGLE_EQUALS expression
@@ -37,6 +38,7 @@ assignment_left ::= variable_definition | IDENTIFIER
 if_statement ::= IF expression LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
 for_statement ::= FOR assignment SEMICOLON expression SEMICOLON assignment LEFT_CURLY_BRACE statement* RIGHT_CURLY_BRACE
 import_statement ::= IMPORT STRING
+assert_statement ::= ASSERT expression
 
 function_arguments ::= data_type IDENTIFIER (COMMA function_arguments)?
 function ::= FUN IDENTIFIER

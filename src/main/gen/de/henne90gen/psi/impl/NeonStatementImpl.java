@@ -30,6 +30,12 @@ public class NeonStatementImpl extends ASTWrapperPsiElement implements NeonState
 
   @Override
   @Nullable
+  public NeonAssertStatement getAssertStatement() {
+    return findChildByClass(NeonAssertStatement.class);
+  }
+
+  @Override
+  @Nullable
   public NeonAssignment getAssignment() {
     return findChildByClass(NeonAssignment.class);
   }
